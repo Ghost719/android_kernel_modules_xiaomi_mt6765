@@ -7,7 +7,9 @@
 	cd modules/
 
 # Compiling
+
 Look at the top of `Makefile` to configure.
+
 	export ARCH=arm
 	export CROSS_COMPILE=$HOME/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-
 	make
