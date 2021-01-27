@@ -2,7 +2,7 @@
 
 # Prepare
 	cd android_kernel_xiaomi_mt6765/
-	git clone https://github.com/Ghost719/android_kernel_modules_xiaomi_mt6765 -b kernel modules/
+	git clone https://github.com/Ghost719/android_kernel_xiaomi_mt6765_modules -b kernel modules/
 	export KERNEL=$PWD
 	cd modules/
 
