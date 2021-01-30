@@ -1,4 +1,4 @@
-
+|
 ARCH ?= arm
 KERNEL ?= $(abspath ..)
 KERNEL_CONFIG ?= cactus_defconfig
@@ -7,6 +7,8 @@ KERNEL_VERSION ?= 4.9
 
 CROSS_COMPILE ?= $(HOME)/xiaomi-mt6765/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-
 OUT = $(KERNEL)/out
+
+STRIP ?= $(CROSS_COMPILE)strip
 
 # variants: mt66xx  mt76xx
 BT_VER ?= mt66xx
@@ -56,12 +58,15 @@ build:
 	# met_drv
 	ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) $(MAKE) -C $(OUT)/ O=$(OUT) M=$(MET_DRV) modules
 
+	mkdir -p build/
+	-find -name "*.ko" -exec mv {} build/ \;
+	$(STRIP) --strip-unneeded build/*.ko
+
 clean:
 	# fpsgo_cus
 	#ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) $(MAKE) -C $(OUT)/ O=$(OUT) M=$(FPSGO) clean
 	-rm -rf $(FPSGO)/.tmp_versions
-	-rm -f $(FPSGO)/*.mod.o
-	-rm -f $(FPSGO)/*.mod.c
+	-rm -f $(FPSGO)/*.mod.*
 	-rm -f $(FPSGO)/.*.cmd
 	-rm -f $(FPSGO)/*.cmd
 	-rm -f $(FPSGO)/*.ko
@@ -69,7 +74,7 @@ clean:
 	-rm -f $(FPSGO)/Module.symvers
 	-rm -f $(FPSGO)/src/fpsgo.o
 	-rm -f $(FPSGO)/src/fpsgo_main.o
-	-rm -f $(FPSGO)/src/.fpsgo_main.o.cmd
+	-rm -f $(FPSGO)/src/.*.o.*
 
 	# connectivity common
 	ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) $(MAKE) -C $(OUT)/ O=$(OUT) M=$(CONNECTIVITY)/common clean
@@ -85,11 +90,6 @@ clean:
 	ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) $(MAKE) -C $(OUT)/ O=$(OUT) M=$(MET_DRV) clean
 
 	-rm -rf build/
-
-pack:
-	mkdir -p build/
-	-find -name "*.ko" -exec cp {} build/ \;
-	$(CROSS_COMPILE)strip --strip-unneeded build/*.ko
 
 prepare:
 	ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) $(MAKE) -C $(KERNEL)/ O=$(OUT) $(KERNEL_CONFIG)
