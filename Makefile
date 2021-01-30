@@ -1,6 +1,6 @@
 
 ARCH ?= arm
-KERNEL ?= $(HOME)/git/android-4.9-p
+KERNEL ?= $(abspath ..)
 KERNEL_CONFIG ?= cactus_defconfig
 KERNEL_MODULES ?= $(KERNEL)/modules
 KERNEL_VERSION ?= 4.9
@@ -23,8 +23,10 @@ AUTOCONF_H = $(OUT)/include/generated/autoconf.h
 WMT_SRC_FOLDER = $(CONNECTIVITY)/common
 
 export AUTOCONF_H WMT_SRC_FOLDER
-export KERNEL_MODULES
 export CONNECTIVITY FPSGO MET_DRV
+
+export ARCH KERNEL KERNEL_CONFIG KERNEL_MODULES KERNEL_VERSION
+export CROSS_COMPILE OUT
 
 # for gen4m options
 export CONFIG_MTK_COMBO_WIFI_HIF=axi
