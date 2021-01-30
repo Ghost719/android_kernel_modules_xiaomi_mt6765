@@ -1,4 +1,4 @@
-|
+
 ARCH ?= arm
 KERNEL ?= $(abspath ..)
 KERNEL_CONFIG ?= cactus_defconfig
@@ -10,11 +10,8 @@ OUT = $(KERNEL)/out
 
 STRIP ?= $(CROSS_COMPILE)strip
 
-# variants: mt66xx  mt76xx
-BT_VER ?= mt66xx
-
-# variants: gen2  gen3  gen4  gen4m  gen4-mt7668
-WLAN_VER ?= gen4m
+BT_VER = mt66xx
+WLAN_VER = gen4m
 
 # do not touch
 CONNECTIVITY = $(KERNEL_MODULES)/connectivity
